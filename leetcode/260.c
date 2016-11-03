@@ -28,30 +28,15 @@ int* singleNumber(int* nums, int numsSize, int* returnSize) {
     int mask = 1;
     while (!(xorret & mask)) mask = mask << 1;
 
-    int* arr1 = (int*) malloc(numsSize * sizeof(int));
-    int len1 = 0;
-    int* arr2 = (int*) malloc(numsSize * sizeof(int));
-    int len2 = 0;
+    ret[0] = 0;
+    ret[1] = 0;
     for (i = 0; i < numsSize; ++i) {
         if (nums[i] & mask) {
-            arr1[len1++] = nums[i];
+            ret[0] ^= nums[i];
         } else {
-            arr2[len2++] = nums[i];
+            ret[1] ^= nums[i];
         }
     }
-
-    ret[0] = arr1[0];
-    for (i = 1; i < len1; ++i) {
-        ret[0] ^= arr1[i];
-    }
-
-    ret[1] = arr2[0];
-    for (i = 1; i < len2; ++i) {
-        ret[1] ^= arr2[i];
-    }
-
-    free(arr1);
-    free(arr2);
 
     return ret;
 }

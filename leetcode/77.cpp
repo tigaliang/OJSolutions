@@ -14,7 +14,12 @@ class Solution {
 public:
     vector<vi> combine(int n, int k) {
         vector<vi> ret;
-        if (k == 1) {
+        if (n == k) {
+            vi t;
+            for (int i = 0; i < n; ++i)
+                t.push_back(i + 1);
+            ret.push_back(t);
+        } else if (k == 1) {
             for (int i = 0; i < n; ++i) {
                 vi t;
                 t.push_back(i + 1);

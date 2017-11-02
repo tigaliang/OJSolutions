@@ -8,6 +8,7 @@
 #include <stack>
 #include <string>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 
@@ -54,16 +55,16 @@ public:
             return false;
         svp.push(first);
 
-        int count = 0;
+        int count = 1;
         while (!svp.empty()) {
             VP top = svp.top();
             if (top.empty()) {
+                count -= 1;
                 svp.pop();
                 continue;
             }
             int i = top.back().i;
             int j = top.back().j;
-
             if (access[i][j]) {
                 access[i][j] = 0;
                 top.pop_back();
@@ -72,29 +73,34 @@ public:
                 continue;
             }
 
-            cout << i << ',' << j << ',' << count << endl;
+            // cout << i << ',' << j << ',' << count << endl;
 
             access[i][j] = 1;
-            count += 1;
             if (count == word.length())
                 return true;
 
             VP next;
             if (i > 0 && !access[i - 1][j] && word[count] == board[i - 1][j]) {
+                // cout << "push " << i - 1 << "," << j << endl;
                 next.push_back(P(i - 1, j));
-            } else if (i < n_rows - 1 && !access[i + 1][j] && word[count] == board[i + 1][j]) {
+            }
+            if (i < n_rows - 1 && !access[i + 1][j] && word[count] == board[i + 1][j]) {
+                // cout << "push " << i + 1 << "," << j << endl;
                 next.push_back(P(i + 1, j));
-            } else if (j > 0 && !access[i][j - 1] && word[count] == board[i][j - 1]) {
+            }
+            if (j > 0 && !access[i][j - 1] && word[count] == board[i][j - 1]) {
+                // cout << "push " << i << "," << j - 1 << endl;
                 next.push_back(P(i, j - 1));
-            } else if (j < n_cols - 1 && !access[i][j + 1] && word[count] == board[i][j + 1]) {
-                cout << "xx" << endl;
+            }
+            if (j < n_cols - 1 && !access[i][j + 1] && word[count] == board[i][j + 1]) {
                 next.push_back(P(i, j + 1));
             }
+
             if (!next.empty()) {
+                count += 1;
                 svp.push(next);
             } else {
                 access[i][j] = 0;
-                count -= 1;
                 top.pop_back();
                 svp.pop();
                 svp.push(top);
@@ -132,12 +138,12 @@ int main(int argc, char const *argv[])
 
     /*
     A B C E
-    S F E S
+    S F C S
     A D E E
     */
 
     Solution solution;
-    if (solution.exist(board, "SEE"))
+    if (solution.exist(board, "ABCB"))
         cout << "YES" << endl;
     else
         cout << "NO" << endl;
